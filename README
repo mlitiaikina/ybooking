@@ -1,0 +1,8 @@
+Run Redis Server
+redis-server
+
+Run Celery  Worker
+celery -A ybooking worker -l INFO
+
+Run Celery Beat for scheduled tasks
+celery -A ybooking beat -l INFO
