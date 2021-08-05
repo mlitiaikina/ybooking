@@ -10,8 +10,8 @@ class IsPatient(BasePermission):
         return bool(
             request.user and
             request.user.is_authenticated and
-            hasattr(request.user, 'person') and
-            request.user.person.is_patient
+            hasattr(request.user, 'profile') and
+            request.user.profile.is_patient
         )
 
 

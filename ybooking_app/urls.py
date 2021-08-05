@@ -9,8 +9,8 @@ router.register(r'persons', views.UserViewSet,  basename='persons')
 router.register(r'blocked-persons', views.BlockedUserViewSet, basename='blocked-persons')
 router.register(r'statistics', views.StatisticsViewSet, basename='statistics')
 
-domains_router = routers.NestedSimpleRouter(router, r'persons', lookup='persons')
-domains_router.register(r'schedule', views.TimetableViewSet, basename='person-schedule')
+domains_router = routers.NestedSimpleRouter(router, r'persons', lookup='person')
+domains_router.register(r'schedule', views.TimetableViewSet, basename='schedule')
 
 urlpatterns = [
     path('', include(router.urls)),

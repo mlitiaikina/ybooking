@@ -71,7 +71,7 @@ class TimetableViewSet(viewsets.ModelViewSet):
         try:
             person = Profile.objects.get(
                 user__is_active=True,
-                pk=self.kwargs['persons_pk'],
+                pk=self.kwargs['person_pk'],
             )
         except Profile.DoesNotExist:
             raise ValueError(f'There is no person with id={self.kwargs["persons_pk"]}')

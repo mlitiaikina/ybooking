@@ -36,7 +36,7 @@ class Timetable(models.Model):
 class Schedule(models.Model):
     doctor = models.ForeignKey(Profile, on_delete=CASCADE, verbose_name='Doctor')
     planning_days = models.IntegerField(default=7, verbose_name='Days number to generate sessions')
-    session_duration = models.IntegerField(verbose_name='')
+    session_duration = models.IntegerField(verbose_name='Session duration (min)')
 
     class Meta:
         db_table = 'schedule'

@@ -12,9 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
     birthday = serializers.DateField(source='profile.birthday')
     is_doctor = serializers.BooleanField(source='profile.is_doctor')
 
+    _nested_fields = ['patronymic', 'sex', 'birthday', 'is_doctor']
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'patronymic', 'sex', 'birthday', 'is_doctor']
+        fields = ['id', 'first_name', 'last_name', 'patronymic', 'sex', 'birthday', 'is_doctor']
 
     @transaction.atomic()
     def create(self, validated_data):
@@ -33,12 +35,15 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        profile_data = validated_data.pop('profile')
+        profile_data = {}
+        for field in set(self._nested_fields) & set(validated_data.keys()):
+            profile_data[field] = validated_data.pop(field)
 
-        if hasattr(instance, 'profile'):
-            instance.profile.update(**profile_data)
-        else:
-            Profile.objects.create(user=instance, **profile_data)
+        if profile_data:
+            if hasattr(instance, 'profile'):
+                instance.profile.update(**profile_data)
+            else:
+                Profile.objects.create(user=instance, **profile_data)
 
         return super().update(instance, validated_data)
 
