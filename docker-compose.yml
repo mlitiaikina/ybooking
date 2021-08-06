@@ -22,16 +22,28 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
-  celery:
+  celery_worker:
     build: .
-    command: celery worker -A ybooking -l INFO
+    command: celery -A ybooking worker -l INFO
     volumes:
       - .:/code
     env_file:
       - .env.dev
     depends_on:
-      - web
       - redis
+      - db
+
+  celery_beat:
+    build: .
+    command: celery -A ybooking beat -l INFO
+    volumes:
+      - .:/code
+    env_file:
+      - .env.dev
+    depends_on:
+      - redis
+      - db
+      - celery_worker
 
   redis:
     image: redis:5-alpine
